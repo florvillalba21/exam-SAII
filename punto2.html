@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Punto 2</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
+  </head>
+  <body>
+    <script>
+  
+      const alphaMax = 1;
+      const alphaMin = 0;
+
+      const colorMax = 255;
+      const colorMin = 0;
+
+      const maxValues = tf.tensor([colorMax, colorMax, colorMax, alphaMax]);
+      const minValues = tf.tensor([colorMin, colorMin, colorMin, alphaMin]);
+
+
+      console.log(maxValues);
+      console.log(minValues);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parcial</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
+    <!--        <script src="newjavascript.js" type="text/javascript"></script>-->
+  </head>
+  <body>
+    <canvas id="flagParaguay"></canvas>
+    <canvas id="pyDoble"></canvas>
+    <canvas id="invertido"></canvas>
+
+    <script>
+      //colores rgb
+      const redColor = [255, 0, 0];
+      const whiteColor = [255, 255, 255];
+      const blueColor = [0, 0, 225];
+
+      //tamaños iniciales para la bandera de py
+      const width = 100;
+      const height = 50;
+
+      //tamaño duplicado para la segunda bandera de py
+      const widthDoble = width * 2;
+      const heightDoble = height * 2;
+
+      //se recuperan los canvas y se asignan sus correspondientes dimensiones
+      const canvasPy = document.getElementById("flagParaguay");
+      canvasPy.width = width;
+      canvasPy.height = height;
+      //se define el grosor de cada franja de la bandera
+      const sizeStripe = height / 3;
+
+      //se recuperan los canvas y se asignan sus correspondientes dimensiones
+      const canvasPy2 = document.getElementById("pyDoble");
+      canvasPy2.width = widthDoble;
+      canvasPy2.height = heightDoble;
+      const sizeStripe2 = heightDoble / 3;
+
+      //se recuperan los canvas y se asignan sus correspondientes dimensiones
+      const canvasInvertido = document.getElementById("invertido");
+      canvasInvertido.width = heightDoble;
+      canvasInvertido.height = widthDoble;
+      const sizeStripe3 = heightDoble / 3;
+
+      //matriz donde se almacenaran cada pixel con su respectivo color
+      const pixelMatrix = [];
+
+      //se recorren los valores de x e y para ubicar los pixeles por coordenada
+      for (let y = 0; y < height; y++) {
+        //variable que contendrá un arreglo de pixeles
+        const row = [];
+
+        //se recorre los valores de x
+        for (let x = 0; x < width; x++) {
+
+            //se valida que desde la posicion de y 0 hasta el valor del ancho de la franja se generen pixeles de color rojo 
+          if (y >= 0 && y <= sizeStripe) {
+            row.push(redColor);
+
+            //se valida que desde la posicion anterior hasta el doble de esa posicion sea color blanco
+          } else if (y > sizeStripe && y <= sizeStripe * 2) {
+            row.push(whiteColor);
+
+            //y el resto será azul
+          } else {
+            row.push(blueColor);
+          }
+        }
+        //se hace push de los arreglos de pixeles
+        pixelMatrix.push(row);
+      }
+
+      //se convierte la matriz común en tensor
+      const pixels = tf.tensor(pixelMatrix, [height, width, 3], "int32");
+
+      //mostrar por pantalla el resultado
+      tf.browser.toPixels(pixels, canvasPy).then(() => {
+        pixels.dispose();
+        console.log(tf.memory().numBytes);
+      });
+
+
+      //creacion de la bandera de py de 200x100 pixeles
+      const pixelMatrix2 = [];
+
+      //se repite el mismo procedimiento anterior
+      for (let y = 0; y < heightDoble; y++) {
+        const row = [];
+        for (let x = 0; x < widthDoble; x++) {
+          if (y >= 0 && y <= sizeStripe2) {
+            row.push(redColor);
+          } else if (y > sizeStripe2 && y <= sizeStripe2 * 2) {
+            row.push(whiteColor);
+          } else {
+            row.push(blueColor);
+          }
+        }
+        pixelMatrix2.push(row);
+      }
+
+      const pixels2 = tf.tensor(
+        pixelMatrix2,
+        [heightDoble, widthDoble, 3],
+        "int32"
+      );
+
+      tf.browser.toPixels(pixels2, canvasPy2).then(() => {
+        pixels.dispose();
+        console.log(tf.memory().numBytes);
+      });
+
+      //funcion donde se dibuja la bandera de py de manera invertida
+      const pixelMatrix3 = [];
+
+      for (let y = 0; y < widthDoble; y++) {
+        const row = [];
+        for (let x = 0; x < heightDoble; x++) {
+          if (x >= 0 && x <= sizeStripe3) {
+            row.push(redColor);
+          } else if (x > sizeStripe3 && x < sizeStripe3 * 2) {
+            row.push(whiteColor);
+          } else {
+            row.push(blueColor);
+          }
+        }
+        pixelMatrix3.push(row);
+      }
+
+      const pixels3 = tf.tensor(
+        pixelMatrix3,
+        [widthDoble, heightDoble, 3],
+        "int32"
+      );
+
+      tf.browser.toPixels(pixels3, canvasInvertido).then(() => {
+        pixels.dispose();
+        console.log(tf.memory().numBytes);
+      });
+    </script>
+  </body>
+</html>
